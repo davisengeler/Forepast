@@ -13,11 +13,12 @@ import MediaPlayer
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var currentSummaryLabel: UILabel!
-    var moviePlayer: MPMoviePlayerController!
+    var moviePlayer : MPMoviePlayerController!
     lazy var data = NSMutableData()
-    var locationManager:CLLocationManager!
-    var geocoder:CLGeocoder!
-    @IBOutlet weak var tempLabel: UILabel!
+    var locationManager : CLLocationManager!
+    var lastLocation : CLLocation!
+    var geocoder : CLGeocoder!
+    @IBOutlet weak var tempLabel : UILabel!
     var lastWeatherInfoUpdate : Int!
 
     override func viewDidLoad() {
@@ -55,11 +56,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
         // Won't update the weather info from the API if the information is less than a minute old
-        if (newLocation.horizontalAccuracy < 150) {
+        lastLocation = newLocation
+        if (newLocation.horizontalAccuracy < 150) ||  (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 15 {
             manager.stopUpdatingLocation()
             locationManager.stopUpdatingLocation()
             if (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 60
             {
+                println("\(newLocation.horizontalAccuracy): \(newLocation.coordinate.latitude), \(newLocation.coordinate.longitude)")
                 updateWeatherInformation(newLocation)
             }
         }
@@ -96,6 +99,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         let urlPath = "https://api.forecast.io/forecast/\(apiKey)/\(latitude),\(longitude)"
+        println(urlPath)
         let url: NSURL = NSURL(string: urlPath)!
         let request: NSURLRequest = NSURLRequest(URL: url)
         let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: false)!
@@ -123,13 +127,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 println("Updated the weather information")
             }
             else {
-                println("Failed to get information. Trying again.")
+                println("Failed to get information. Trying again: ")
+                print(err)
                 lastWeatherInfoUpdate = 60
+                updateWeatherInformation(lastLocation)
                 locationManager.startUpdatingLocation()
             }
         } else {
-            println("Failed to get information. Trying again.")
+            println("Failed to get information. Trying again: ")
+            print(err)
             lastWeatherInfoUpdate = 60
+            updateWeatherInformation(lastLocation)
             locationManager.startUpdatingLocation()
         }
         
