@@ -11,11 +11,13 @@ import CoreLocation
 import MediaPlayer
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
-    var moviePlayer:MPMoviePlayerController!
+    
+    var moviePlayer: MPMoviePlayerController!
     lazy var data = NSMutableData()
     var locationManager:CLLocationManager!
     var geocoder:CLGeocoder!
     @IBOutlet weak var tempLabel: UILabel!
+    var lastWeatherInfoUpdate : Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,47 +34,60 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         moviePlayer.scalingMode = MPMovieScalingMode.AspectFill
         self.view.sendSubviewToBack(moviePlayer.view)
         
+        println(moviePlayer)
+        
+        lastWeatherInfoUpdate = 0
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        println("Started updating location")
     }
     
-    func locationManager(manager:CLLocationManager, didUpdateLocations locations:[AnyObject])
-    {
-        let lastElement = locations.count - 1
-        let lastLocation: CLLocation = locations[lastElement] as CLLocation
+    override func viewDidLayoutSubviews() {
+        if moviePlayer != nil {
+            moviePlayer.play()
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
         
-        println(lastLocation.horizontalAccuracy)
-        if (lastLocation.horizontalAccuracy < 100)
-        {
+        println("Updated location.")
+        
+        // Won't update the weather info from the API if the information is less than a minute old
+        if (newLocation.horizontalAccuracy < 150) {
+            print("The displayed info is ")
+            print(Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate)
+            print(" seconds old.\n")
+            manager.stopUpdatingLocation()
             locationManager.stopUpdatingLocation()
-            println("Found accurate location. I'll stop updating it now.")
-            locationManager.startMonitoringSignificantLocationChanges()
-            println("Monitoring for significant changes.")
-            updateWeatherInformation(lastLocation)
+            if (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 60
+            {
+                updateWeatherInformation(newLocation)
+            }
         }
         
-//        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {
-//            
-//            (placemarks, error)->Void in
-//            
-//            if (error != nil) {
-//                println("Reverse geocoder failed with error" + error.localizedDescription)
-//                return
-//            }
-//            
-//            if placemarks.count > 0 {
-//                let pm = placemarks[0] as CLPlacemark
-//                let areaOfInterest : NSString = pm.areasOfInterest[0] as NSString
-//                
-//                self.myTextView.text = pm.locality + ", " + pm.subLocality + ": " + areaOfInterest
-//            } else {
-//                println("Problem with the data received from geocoder")
-//            }
-//            
-//        })
+        //        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {
+        //
+        //            (placemarks, error)->Void in
+        //
+        //            if (error != nil) {
+        //                println("Reverse geocoder failed with error" + error.localizedDescription)
+        //                return
+        //            }
+        //
+        //            if placemarks.count > 0 {
+        //                let pm = placemarks[0] as CLPlacemark
+        //                let areaOfInterest : NSString = pm.areasOfInterest[0] as NSString
+        //
+        //                self.myTextView.text = pm.locality + ", " + pm.subLocality + ": " + areaOfInterest
+        //            } else {
+        //                println("Problem with the data received from geocoder")
+        //            }
+        //            
+        //        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,6 +105,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let url: NSURL = NSURL(string: urlPath)!
         let request: NSURLRequest = NSURLRequest(URL: url)
         let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: false)!
+        lastWeatherInfoUpdate = Int(location.timestamp.timeIntervalSinceReferenceDate)
         connection.start()
     }
     
@@ -102,8 +118,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var err = NSErrorPointer()
         
         if let jsonResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: err) {
-            if let weather = jsonResult as? NSDictionary
-            {
+            if let weather = jsonResult as? NSDictionary {
                 let currentConditions = weather["currently"] as NSDictionary
                 let currentTemp: Int = Int(round(currentConditions["temperature"] as Double))
                 let currentSummary = currentConditions["summary"] as String
@@ -111,16 +126,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 tempLabel.text = "\(currentTemp)º"
             }
-            else
-            {
+            else {
                 println("Had to start updating location again.")
                 locationManager.startUpdatingLocation()
             }
+        } else {
+            println("Had to start updating location again.")
+            locationManager.startUpdatingLocation()
         }
         
     }
-
-
-
 }
 
