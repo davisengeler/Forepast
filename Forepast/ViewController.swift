@@ -12,6 +12,7 @@ import MediaPlayer
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBOutlet weak var currentSummaryLabel: UILabel!
     var moviePlayer: MPMoviePlayerController!
     lazy var data = NSMutableData()
     var locationManager:CLLocationManager!
@@ -36,7 +37,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         println(moviePlayer)
         
-        lastWeatherInfoUpdate = 0
+        lastWeatherInfoUpdate = 60
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
@@ -53,14 +54,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
-        
-        println("Updated location.")
-        
         // Won't update the weather info from the API if the information is less than a minute old
         if (newLocation.horizontalAccuracy < 150) {
-            print("The displayed info is ")
-            print(Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate)
-            print(" seconds old.\n")
             manager.stopUpdatingLocation()
             locationManager.stopUpdatingLocation()
             if (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 60
@@ -101,7 +96,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         let urlPath = "https://api.forecast.io/forecast/\(apiKey)/\(latitude),\(longitude)"
-        println("\(urlPath)")
         let url: NSURL = NSURL(string: urlPath)!
         let request: NSURLRequest = NSURLRequest(URL: url)
         let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: false)!
@@ -118,20 +112,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var err = NSErrorPointer()
         
         if let jsonResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: err) {
-            if let weather = jsonResult as? NSDictionary {
-                let currentConditions = weather["currently"] as NSDictionary
-                let currentTemp: Int = Int(round(currentConditions["temperature"] as Double))
-                let currentSummary = currentConditions["summary"] as String
-                let currentFeelsLike = currentConditions["apparentTemperature"] as Double
-                
-                tempLabel.text = "\(currentTemp)º"
+            if let weatherJSON = jsonResult as? NSDictionary {
+//                let currentConditions = weather["currently"] as NSDictionary
+//                let currentTemp: Int = Int(round(currentConditions["temperature"] as Double))
+//                let currentSummary = currentConditions["summary"] as String
+//                let currentFeelsLike = currentConditions["apparentTemperature"] as Double
+                let weather = Weather(weatherInfo: weatherJSON)
+                currentSummaryLabel.text = weather.currentWeather.summary
+                tempLabel.text = "\(weather.currentWeather.temperature)º"
+                println("Updated the weather information")
             }
             else {
-                println("Had to start updating location again.")
+                println("Failed to get information. Trying again.")
+                lastWeatherInfoUpdate = 60
                 locationManager.startUpdatingLocation()
             }
         } else {
-            println("Had to start updating location again.")
+            println("Failed to get information. Trying again.")
+            lastWeatherInfoUpdate = 60
             locationManager.startUpdatingLocation()
         }
         
