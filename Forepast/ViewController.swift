@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import MediaPlayer
+import AVFoundation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -24,9 +25,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        let fileLocation = NSBundle.mainBundle().pathForResource("Night-Cloud-Loop-Blur", ofType: "mov")
+        // THIS IS JUST TO TEST DIFFERENT BACKGROUND LOOPS
+        var videoBackgroundName : String!
+        var alphaValue : CGFloat!
+        let rand = arc4random_uniform(10) % 2
+        if rand == 0 {
+            println(rand)
+            videoBackgroundName = "Night-Cloud-Loop-Blur"
+            alphaValue = 1.0
+            
+        } else {
+            println(rand)
+            videoBackgroundName = "tree-sun-loop"
+            alphaValue = 0.7
+        }
+        // -------------
+        
+        // Sets up the object for the background image.
+        let fileLocation = NSBundle.mainBundle().pathForResource(videoBackgroundName, ofType: "mov")
         var url: NSURL = NSURL(fileURLWithPath: fileLocation!)!
         moviePlayer = MPMoviePlayerController(contentURL: url)
         moviePlayer.view.frame = self.view.frame
@@ -35,15 +52,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         moviePlayer.controlStyle = MPMovieControlStyle.None
         moviePlayer.repeatMode = MPMovieRepeatMode.One
         moviePlayer.scalingMode = MPMovieScalingMode.AspectFill
+        moviePlayer.allowsAirPlay = false
+        moviePlayer.view.alpha = alphaValue
+        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
         self.view.sendSubviewToBack(moviePlayer.view)
         
-        println(moviePlayer)
-        
+        // Get the location and update the weather information
         lastWeatherInfoUpdate = 60
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.requestWhenInUseAuthorization()
+        locationManager.pausesLocationUpdatesAutomatically = true
         locationManager.startUpdatingLocation()
         println("Started updating location")
         
@@ -51,7 +71,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        if moviePlayer != nil {
+        if moviePlayer != nil && moviePlayer.currentPlaybackRate == 0.0 {
             moviePlayer.play()
             locationManager.startUpdatingLocation()
         }
@@ -69,14 +89,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
         // Won't update the weather info from the API if the information is less than a minute old
+        println("Found a new location. \(lastWeatherInfoUpdate)")
         lastLocation = newLocation
         if (newLocation.horizontalAccuracy < 150) ||  (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 15 {
-            manager.stopUpdatingLocation()
             locationManager.stopUpdatingLocation()
             if (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 60
             {
                 println("\(newLocation.horizontalAccuracy): \(newLocation.coordinate.latitude), \(newLocation.coordinate.longitude)")
-                updateWeatherInformation(newLocation)
+                getWeatherInformation(newLocation)
             }
         }
         
@@ -106,7 +126,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func updateWeatherInformation(location : CLLocation)
+    func getWeatherInformation(location : CLLocation)
     {
         let apiKey = "f0d31603b3649790242ecfb628ebe33c"
         let latitude = location.coordinate.latitude
@@ -130,27 +150,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if let jsonResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: err) {
             if let weatherJSON = jsonResult as? NSDictionary {
-//                let currentConditions = weather["currently"] as NSDictionary
-//                let currentTemp: Int = Int(round(currentConditions["temperature"] as Double))
-//                let currentSummary = currentConditions["summary"] as String
-//                let currentFeelsLike = currentConditions["apparentTemperature"] as Double
                 let weather = Weather(weatherInfo: weatherJSON)
                 currentSummaryLabel.text = weather.currentWeather.summary
                 tempLabel.text = "\(weather.currentWeather.temperature)º"
+                currentSummaryLabel.text = "Currently \(weather.currentWeather.summary.lowercaseString). \(weather.dailyWeather.summary)"
                 println("Updated the weather information")
+                println("Summary: \(weather.dailyWeather.summary)")
             }
             else {
                 println("Failed to get information. Trying again: ")
                 print(err)
                 lastWeatherInfoUpdate = 60
-                updateWeatherInformation(lastLocation)
+                getWeatherInformation(lastLocation)
                 locationManager.startUpdatingLocation()
             }
         } else {
             println("Failed to get information. Trying again: ")
             print(err)
             lastWeatherInfoUpdate = 60
-            updateWeatherInformation(lastLocation)
+            getWeatherInformation(lastLocation)
             locationManager.startUpdatingLocation()
         }
         

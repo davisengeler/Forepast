@@ -17,7 +17,6 @@
 		722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */; };
 		722AABDF1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDE1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov */; };
 		727D53811A3142600061BC13 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D53801A3142600061BC13 /* Weather.swift */; };
-		727D53831A3143C10061BC13 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D53821A3143C10061BC13 /* CurrentWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +44,6 @@
 		722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "tree-sun-loop.mov"; sourceTree = "<group>"; };
 		722AABDE1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "Night-Cloud-Loop-Blur.mov"; sourceTree = "<group>"; };
 		727D53801A3142600061BC13 /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
-		727D53821A3143C10061BC13 /* CurrentWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +88,6 @@
 				72218F731A2D02FE003CA21E /* AppDelegate.swift */,
 				72218F781A2D02FE003CA21E /* ViewController.swift */,
 				727D53801A3142600061BC13 /* Weather.swift */,
-				727D53821A3143C10061BC13 /* CurrentWeather.swift */,
 				72218F7A1A2D02FE003CA21E /* Main.storyboard */,
 				72218F7D1A2D02FE003CA21E /* Images.xcassets */,
 				72218F7F1A2D02FE003CA21E /* LaunchScreen.xib */,
@@ -236,7 +233,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				727D53811A3142600061BC13 /* Weather.swift in Sources */,
-				727D53831A3143C10061BC13 /* CurrentWeather.swift in Sources */,
 				72218F791A2D02FE003CA21E /* ViewController.swift in Sources */,
 				72218F741A2D02FE003CA21E /* AppDelegate.swift in Sources */,
 				72218F771A2D02FE003CA21E /* Forepast.xcdatamodeld in Sources */,
