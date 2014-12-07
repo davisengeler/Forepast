@@ -13,13 +13,14 @@ import MediaPlayer
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var currentSummaryLabel: UILabel!
+    @IBOutlet weak var bottomScrollView: UIScrollView!
     @IBOutlet weak var tempLabel : UILabel!
+    lazy var data = NSMutableData()
     var moviePlayer : MPMoviePlayerController!
     var locationManager : CLLocationManager!
     var lastLocation : CLLocation!
     var geocoder : CLGeocoder!
     var lastWeatherInfoUpdate : Int!
-    lazy var data = NSMutableData()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         println("Started updating location")
+        
+        bottomScrollView.contentSize = CGSizeMake(1225.0, 128.0)
     }
     
     override func viewDidLayoutSubviews() {
@@ -56,8 +59,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         let fromInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
-        if fromInterfaceOrientation.isLandscape && toInterfaceOrientation.isLandscape {
-            // going from landscape to landscape
+        if !(fromInterfaceOrientation.isLandscape && toInterfaceOrientation.isLandscape) {
+            UIView.animateWithDuration(duration, animations: {
+                let newFrame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.height, self.view.frame.width)
+                self.moviePlayer.view.frame = newFrame
+            })
         }
     }
     
