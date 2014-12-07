@@ -13,13 +13,13 @@ import MediaPlayer
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var currentSummaryLabel: UILabel!
+    @IBOutlet weak var tempLabel : UILabel!
     var moviePlayer : MPMoviePlayerController!
-    lazy var data = NSMutableData()
     var locationManager : CLLocationManager!
     var lastLocation : CLLocation!
     var geocoder : CLGeocoder!
-    @IBOutlet weak var tempLabel : UILabel!
     var lastWeatherInfoUpdate : Int!
+    lazy var data = NSMutableData()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +51,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if moviePlayer != nil {
             moviePlayer.play()
             locationManager.startUpdatingLocation()
+        }
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        let fromInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+        if fromInterfaceOrientation.isLandscape && toInterfaceOrientation.isLandscape {
+            // going from landscape to landscape
         }
     }
     
