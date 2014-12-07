@@ -26,20 +26,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // THIS IS JUST TO TEST DIFFERENT BACKGROUND LOOPS
+        // Hides the test scroll view on the bottom
+        bottomScrollView.alpha = 0
+        
+        // JUST TO TEST DIFFERENT BACKGROUND LOOPS
         var videoBackgroundName : String!
         var alphaValue : CGFloat!
-        let rand = arc4random_uniform(10) % 2
-        if rand == 0 {
-            println(rand)
-            videoBackgroundName = "Night-Cloud-Loop-Blur"
-            alphaValue = 1.0
-            
-        } else {
-            println(rand)
-            videoBackgroundName = "tree-sun-loop"
-            alphaValue = 0.7
-        }
+        videoBackgroundName = "rain"
+        alphaValue = 1.0
+//        let rand = arc4random_uniform(10) % 2
+//        if rand == 0 {
+//            println(rand)
+//            videoBackgroundName = "rain"
+//            alphaValue = 1.0
+//            
+//        } else {
+//            println(rand)
+//            videoBackgroundName = "tree-sun-loop"
+//            alphaValue = 0.7
+//        }
         // -------------
         
         // Sets up the object for the background image.

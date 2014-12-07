@@ -15,7 +15,7 @@
 		72218F811A2D02FE003CA21E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72218F7F1A2D02FE003CA21E /* LaunchScreen.xib */; };
 		72218F8D1A2D02FE003CA21E /* ForepastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72218F8C1A2D02FE003CA21E /* ForepastTests.swift */; };
 		722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */; };
-		722AABDF1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDE1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov */; };
+		722AABDF1A2FDE6D0098D603 /* rain.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDE1A2FDE6D0098D603 /* rain.mov */; };
 		727D53811A3142600061BC13 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D53801A3142600061BC13 /* Weather.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +42,7 @@
 		72218F8B1A2D02FE003CA21E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72218F8C1A2D02FE003CA21E /* ForepastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForepastTests.swift; sourceTree = "<group>"; };
 		722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "tree-sun-loop.mov"; sourceTree = "<group>"; };
-		722AABDE1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "Night-Cloud-Loop-Blur.mov"; sourceTree = "<group>"; };
+		722AABDE1A2FDE6D0098D603 /* rain.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = rain.mov; sourceTree = "<group>"; };
 		727D53801A3142600061BC13 /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,7 +100,7 @@
 		72218F711A2D02FE003CA21E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				722AABDE1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov */,
+				722AABDE1A2FDE6D0098D603 /* rain.mov */,
 				722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */,
 				72218F721A2D02FE003CA21E /* Info.plist */,
 			);
@@ -211,7 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72218F7C1A2D02FE003CA21E /* Main.storyboard in Resources */,
-				722AABDF1A2FDE6D0098D603 /* Night-Cloud-Loop-Blur.mov in Resources */,
+				722AABDF1A2FDE6D0098D603 /* rain.mov in Resources */,
 				72218F811A2D02FE003CA21E /* LaunchScreen.xib in Resources */,
 				72218F7E1A2D02FE003CA21E /* Images.xcassets in Resources */,
 				722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */,
