@@ -158,9 +158,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let weather = Weather(weatherInfo: weatherJSON)
                 currentSummaryLabel.text = weather.currentWeather.summary
                 tempLabel.text = "\(weather.currentWeather.temperature)º"
-                currentSummaryLabel.text = "Currently \(weather.currentWeather.summary.lowercaseString). \(weather.dailyWeather.summary)"
-                println("Updated the weather information")
-                println("Summary: \(weather.dailyWeather.summary)")
+                currentSummaryLabel.text = "Currently \(weather.currentWeather.summary.lowercaseString). \(weather.minutelyWeather.summary)"
             }
             else {
                 println("Failed to get information. Trying again: ")

@@ -11,18 +11,19 @@ import Foundation
 class Weather {
     // Built to accept an NSDictionary built from Forecast.IO API
     var weatherInfo : NSDictionary
-    var currentWeather : CurrentWeather
-    var dailyWeather : DailyWeather
+    var currentWeather : CurrentlyWeather
+    var forecastedWeather : ForecastedWeather
+    var minutelyWeather : MinutelyWeather
     
     init ( weatherInfo : NSDictionary ) {
         self.weatherInfo = weatherInfo
-        self.currentWeather = CurrentWeather(currentWeatherInfo: (weatherInfo["currently"] as NSDictionary))
-        self.dailyWeather = DailyWeather(dailyWeatherInfo: (weatherInfo["daily"] as NSDictionary))
+        self.currentWeather = CurrentlyWeather(currentWeatherInfo: (weatherInfo["currently"] as NSDictionary))
+        self.forecastedWeather = ForecastedWeather(dailyWeatherDictionary: (weatherInfo["daily"] as NSDictionary))
+        self.minutelyWeather = MinutelyWeather(minutelyDictionary: (weatherInfo["minutely"] as NSDictionary))
     }
-    
 }
 
-class CurrentWeather {
+class CurrentlyWeather {
     var currentWeatherInfo : NSDictionary
     var temperature : Int
     var apparentTemperature : Int
@@ -38,13 +39,24 @@ class CurrentWeather {
     }
 }
 
-class DailyWeather {
-    var dailyWeatherInfo : NSDictionary
+class MinutelyWeather {
+    var minuteData : [NSDictionary]
+    var icon : String
     var summary : String
     
-    init(dailyWeatherInfo: NSDictionary) {
-        self.dailyWeatherInfo = dailyWeatherInfo
-        self.summary = dailyWeatherInfo["summary"] as String
+    init(minutelyDictionary: NSDictionary) {
+        self.minuteData = minutelyDictionary["data"] as [NSDictionary]
+        self.icon = minutelyDictionary["icon"] as String
+        self.summary = minutelyDictionary["summary"] as String
     }
+}
+
+class ForecastedWeather {
+    var dailyData : [NSDictionary]
+    var summary : String
     
+    init(dailyWeatherDictionary: NSDictionary) {
+        self.dailyData = dailyWeatherDictionary["data"] as [NSDictionary]
+        self.summary = dailyWeatherDictionary["summary"] as String
+    }
 }
