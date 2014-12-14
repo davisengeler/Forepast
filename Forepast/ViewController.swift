@@ -13,18 +13,56 @@ import AVFoundation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBOutlet weak var testButton: UIButton!
     @IBOutlet weak var currentSummaryLabel: UILabel!
     @IBOutlet weak var bottomScrollView: UIScrollView!
     @IBOutlet weak var tempLabel : UILabel!
     lazy var data = NSMutableData()
-    var moviePlayer : MPMoviePlayerController!
+    var currentBackground : MPMoviePlayerController!
     var locationManager : CLLocationManager!
     var lastLocation : CLLocation!
     var geocoder : CLGeocoder!
     var lastWeatherInfoUpdate : Int!
+    var firstUpdate = true
 
+    @IBAction func sendViewToBack(sender: AnyObject) {
+        let rainBackground = WeatherBackground(fileName: "rain", fileType: "mov")
+        let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileType: "mov")
+        let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileType: "mp4")
+        
+        
+        var newBackground : MPMoviePlayerController
+        
+        switch "something" {
+            case "clear-day", "clear-night":
+                newBackground = sunBackground.prepareBackground(self, animated: firstUpdate)
+            case "overcast-day", "overcast-night":
+                newBackground = cloudyNightBackground.prepareBackground(self, animated: firstUpdate)
+            default:
+                newBackground = rainBackground.prepareBackground(self, animated: firstUpdate)
+        }
+        
+        let oldBackground = currentBackground
+        
+        self.view.insertSubview(newBackground.view, aboveSubview: oldBackground.view)
+        UIView.animateWithDuration(4 as NSTimeInterval, animations: {
+            newBackground.view.alpha = 1
+            }, completion: {
+                finished in
+                if finished {
+                    oldBackground.view.removeFromSuperview()
+                    println(self.view.subviews.count)
+                }
+        })
+        
+        currentBackground = newBackground
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tempLabel.alpha = 0
+        self.currentSummaryLabel.alpha = 0
         
         // Hides the test scroll view on the bottom
         bottomScrollView.alpha = 0
@@ -47,20 +85,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //        }
         // -------------
         
-        // Sets up the object for the background image.
-        let fileLocation = NSBundle.mainBundle().pathForResource(videoBackgroundName, ofType: "mov")
-        var url: NSURL = NSURL(fileURLWithPath: fileLocation!)!
-        moviePlayer = MPMoviePlayerController(contentURL: url)
-        moviePlayer.view.frame = self.view.frame
-        self.view.addSubview(moviePlayer.view)
-        moviePlayer.fullscreen = false
-        moviePlayer.controlStyle = MPMovieControlStyle.None
-        moviePlayer.repeatMode = MPMovieRepeatMode.One
-        moviePlayer.scalingMode = MPMovieScalingMode.AspectFill
-        moviePlayer.allowsAirPlay = false
-        moviePlayer.view.alpha = alphaValue
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
-        self.view.sendSubviewToBack(moviePlayer.view)
         
         // Get the location and update the weather information
         lastWeatherInfoUpdate = 60
@@ -76,8 +100,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        if moviePlayer != nil && moviePlayer.currentPlaybackRate == 0.0 {
-            moviePlayer.play()
+        if currentBackground != nil && currentBackground.currentPlaybackRate == 0.0 {
+            currentBackground.play()
             locationManager.startUpdatingLocation()
         }
     }
@@ -87,14 +111,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if !(fromInterfaceOrientation.isLandscape && toInterfaceOrientation.isLandscape) {
             UIView.animateWithDuration(duration, animations: {
                 let newFrame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.height, self.view.frame.width)
-                self.moviePlayer.view.frame = newFrame
+                self.currentBackground.view.frame = newFrame
             })
         }
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!) {
         // Won't update the weather info from the API if the information is less than a minute old
-        println("Found a new location. \(lastWeatherInfoUpdate)")
+        println("Found a new location. \(newLocation.horizontalAccuracy)")
         lastLocation = newLocation
         if (newLocation.horizontalAccuracy < 150) ||  (Int(newLocation.timestamp.timeIntervalSinceReferenceDate) - lastWeatherInfoUpdate) > 15 {
             locationManager.stopUpdatingLocation()
@@ -104,26 +128,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 getWeatherInformation(newLocation)
             }
         }
-        
-        //        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {
-        //
-        //            (placemarks, error)->Void in
-        //
-        //            if (error != nil) {
-        //                println("Reverse geocoder failed with error" + error.localizedDescription)
-        //                return
-        //            }
-        //
-        //            if placemarks.count > 0 {
-        //                let pm = placemarks[0] as CLPlacemark
-        //                let areaOfInterest : NSString = pm.areasOfInterest[0] as NSString
-        //
-        //                self.myTextView.text = pm.locality + ", " + pm.subLocality + ": " + areaOfInterest
-        //            } else {
-        //                println("Problem with the data received from geocoder")
-        //            }
-        //            
-        //        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -158,23 +162,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let weather = Weather(weatherInfo: weatherJSON)
                 currentSummaryLabel.text = weather.currentWeather.summary
                 tempLabel.text = "\(weather.currentWeather.temperature)º"
-                currentSummaryLabel.text = "Currently \(weather.currentWeather.summary.lowercaseString). \(weather.minutelyWeather.summary)"
+                currentSummaryLabel.text = weather.minutelyWeather.summary
+                
+                
+                // TODO: Put the stuff to get the background ready here...
+                let rainBackground = WeatherBackground(fileName: "rain", fileType: "mov")
+                let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileType: "mov")
+                let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileType: "mp4")
+                
+                
+                var newBackground : MPMoviePlayerController
+                
+                switch weather.currentWeather.icon {
+                    case "clear-day", "clear-night":
+                        newBackground = sunBackground.prepareBackground(self, animated: firstUpdate)
+                    case "overcast-day", "overcast-night":
+                        newBackground = cloudyNightBackground.prepareBackground(self, animated: firstUpdate)
+                    default:
+                        newBackground = rainBackground.prepareBackground(self, animated: firstUpdate)
+                }
+                
+                if let oldBackground = currentBackground {
+                    self.view.insertSubview(newBackground.view, belowSubview: oldBackground.view)
+                    newBackground.view.alpha = 1
+                    UIView.animateWithDuration(1.5 as NSTimeInterval, animations: {
+                            oldBackground.view.removeFromSuperview()
+                    })
+                } else {
+                    self.view.addSubview(newBackground.view)
+                    self.view.sendSubviewToBack(newBackground.view)
+                        UIView.animateWithDuration(1.5 as NSTimeInterval, animations: {
+                        newBackground.view.alpha = 1
+                        self.tempLabel.alpha = 1
+                        self.currentSummaryLabel.alpha = 1
+                        self.view.backgroundColor = UIColor.blackColor()
+                    })
+                    firstUpdate = false
+                }
+                currentBackground = newBackground
             }
             else {
-                println("Failed to get information. Trying again: ")
-                print(err)
-                lastWeatherInfoUpdate = 60
-                getWeatherInformation(lastLocation)
-                locationManager.startUpdatingLocation()
+                retryUpdatingWeather()
             }
         } else {
-            println("Failed to get information. Trying again: ")
-            print(err)
-            lastWeatherInfoUpdate = 60
-            getWeatherInformation(lastLocation)
-            locationManager.startUpdatingLocation()
+            retryUpdatingWeather()
         }
         
+    }
+    
+    func removeASubview (subview : UIView) {
+        subview.removeFromSuperview()
+    }
+    
+    func retryUpdatingWeather() {
+        println("Failed to get information. Trying again: ")
+        lastWeatherInfoUpdate = 60
+        getWeatherInformation(lastLocation)
+        locationManager.startUpdatingLocation()
     }
 }
 

@@ -204,7 +204,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="Uzc-Y0-g9O"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-ThinItalic" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-ThinItalic" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
@@ -231,8 +231,17 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qce-5V-g0G">
+                                <rect key="frame" x="277" y="307" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendViewToBack:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="3zx-TI-trJ"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.030027302415974944" green="0.74391401933701662" blue="0.72604255536022555" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3KM-Lm-M43" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="CQo-s6-O7S"/>
                             <constraint firstItem="dpw-GS-s6w" firstAttribute="bottom" secondItem="jV4-9m-aH7" secondAttribute="bottom" constant="75" id="EPB-he-DW6"/>
@@ -314,6 +323,7 @@
                         <outlet property="bottomScrollView" destination="dpw-GS-s6w" id="8r3-lJ-quQ"/>
                         <outlet property="currentSummaryLabel" destination="jV4-9m-aH7" id="ePG-Sh-1f3"/>
                         <outlet property="tempLabel" destination="3KM-Lm-M43" id="HVV-Fc-3iz"/>
+                        <outlet property="testButton" destination="Qce-5V-g0G" id="fnd-hW-lPt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

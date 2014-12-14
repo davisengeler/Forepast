@@ -17,6 +17,8 @@
 		722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */; };
 		722AABDF1A2FDE6D0098D603 /* rain.mov in Resources */ = {isa = PBXBuildFile; fileRef = 722AABDE1A2FDE6D0098D603 /* rain.mov */; };
 		727D53811A3142600061BC13 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D53801A3142600061BC13 /* Weather.swift */; };
+		72C0A0BC1A3CBEA7007AB3B9 /* WeatherBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C0A0BB1A3CBEA7007AB3B9 /* WeatherBackground.swift */; };
+		72C0A0BF1A3CCBD2007AB3B9 /* cloudy-night.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 72C0A0BE1A3CCBD2007AB3B9 /* cloudy-night.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "tree-sun-loop.mov"; sourceTree = "<group>"; };
 		722AABDE1A2FDE6D0098D603 /* rain.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = rain.mov; sourceTree = "<group>"; };
 		727D53801A3142600061BC13 /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		72C0A0BB1A3CBEA7007AB3B9 /* WeatherBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WeatherBackground.swift; path = ../WeatherBackground.swift; sourceTree = "<group>"; };
+		72C0A0BE1A3CCBD2007AB3B9 /* cloudy-night.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cloudy-night.mp4"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,7 @@
 				72218F731A2D02FE003CA21E /* AppDelegate.swift */,
 				72218F781A2D02FE003CA21E /* ViewController.swift */,
 				727D53801A3142600061BC13 /* Weather.swift */,
+				72C0A0BB1A3CBEA7007AB3B9 /* WeatherBackground.swift */,
 				72218F7A1A2D02FE003CA21E /* Main.storyboard */,
 				72218F7D1A2D02FE003CA21E /* Images.xcassets */,
 				72218F7F1A2D02FE003CA21E /* LaunchScreen.xib */,
@@ -100,6 +105,7 @@
 		72218F711A2D02FE003CA21E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				72C0A0BE1A3CCBD2007AB3B9 /* cloudy-night.mp4 */,
 				722AABDE1A2FDE6D0098D603 /* rain.mov */,
 				722AABDC1A2E68D30098D603 /* tree-sun-loop.mov */,
 				72218F721A2D02FE003CA21E /* Info.plist */,
@@ -212,6 +218,7 @@
 			files = (
 				72218F7C1A2D02FE003CA21E /* Main.storyboard in Resources */,
 				722AABDF1A2FDE6D0098D603 /* rain.mov in Resources */,
+				72C0A0BF1A3CCBD2007AB3B9 /* cloudy-night.mp4 in Resources */,
 				72218F811A2D02FE003CA21E /* LaunchScreen.xib in Resources */,
 				72218F7E1A2D02FE003CA21E /* Images.xcassets in Resources */,
 				722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */,
@@ -234,6 +241,7 @@
 			files = (
 				727D53811A3142600061BC13 /* Weather.swift in Sources */,
 				72218F791A2D02FE003CA21E /* ViewController.swift in Sources */,
+				72C0A0BC1A3CBEA7007AB3B9 /* WeatherBackground.swift in Sources */,
 				72218F741A2D02FE003CA21E /* AppDelegate.swift in Sources */,
 				72218F771A2D02FE003CA21E /* Forepast.xcdatamodeld in Sources */,
 			);
