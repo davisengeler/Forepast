@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Davis Engeler. All rights reserved.
 //
 
+// Move to a function in ViewController.swift
+
 import Foundation
 import MediaPlayer
 import AVFoundation
@@ -30,11 +32,10 @@ class WeatherBackground {
         backgroundMoviePlayer.repeatMode = MPMovieRepeatMode.One
         backgroundMoviePlayer.scalingMode = MPMovieScalingMode.AspectFill
         backgroundMoviePlayer.allowsAirPlay = false
+        backgroundMoviePlayer.movieSourceType = MPMovieSourceType.File
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
         
-        backgroundMoviePlayer.view.alpha = 0
-        
-        println("Background alpha: \(backgroundMoviePlayer.view.alpha)")
+        backgroundMoviePlayer.view.alpha = 0.8
         
         return backgroundMoviePlayer
     }
