@@ -26,19 +26,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var firstUpdate = true
 
     @IBAction func sendViewToBack(sender: AnyObject) {
-        // TODO: Put the stuff to get the background ready here...
-        let rainBackground = WeatherBackground(fileName: "rain", fileType: "mov")
-        let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileType: "mov")
-        let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileType: "mp4")
+        // TODO: Put the stuff to get the background ready here...rotat
+        let rainBackground = WeatherBackground(fileName: "rain", fileExtension: "mov", hasVideo: true)
+        let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileExtension: "mov", hasVideo: true)
+        let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileExtension: "mp4", hasVideo: true)
+        let clearBackground = WeatherBackground(fileName: "launch", fileExtension: "png", hasVideo: true)
+        let partyCloudyBackground = WeatherBackground(fileName: "partly-cloudy", fileExtension: "jpg", hasVideo: false)
         
         
         var background: MPMoviePlayerController?
         
-        switch "rain" {
+        switch "overcast-day" {
         case "clear-day", "clear-night":
             background = sunBackground.prepareBackground(self, animated: firstUpdate)
         case "overcast-day", "overcast-night":
-            background = cloudyNightBackground.prepareBackground(self, animated: firstUpdate)
+            background = partyCloudyBackground.prepareBackground(self, animated: firstUpdate)
         default:
             background = rainBackground.prepareBackground(self, animated: firstUpdate)
         }
@@ -188,9 +190,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 
                 // TODO: Put the stuff to get the background ready here...
-                let rainBackground = WeatherBackground(fileName: "rain", fileType: "mov")
-                let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileType: "mov")
-                let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileType: "mp4")
+                let rainBackground = WeatherBackground(fileName: "rain", fileExtension: "mov", hasVideo: true)
+                let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileExtension: "mov", hasVideo: true)
+                let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileExtension: "mp4", hasVideo: true)
+                let partyCloudyBackground = WeatherBackground(fileName: "partly-cloudy", fileExtension: "jpg", hasVideo: false)
                 
                 var background: MPMoviePlayerController?
                 
