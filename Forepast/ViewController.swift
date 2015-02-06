@@ -38,11 +38,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         switch "overcast-day" {
         case "clear-day", "clear-night":
-            background = sunBackground.prepareBackground(self, animated: firstUpdate)
+            background = sunBackground.prepareBackground(self)
         case "overcast-day", "overcast-night":
-            background = partyCloudyBackground.prepareBackground(self, animated: firstUpdate)
+            background = partyCloudyBackground.prepareBackground(self)
         default:
-            background = rainBackground.prepareBackground(self, animated: firstUpdate)
+            background = rainBackground.prepareBackground(self)
         }
         
         if self.currentBackground != nil
@@ -190,20 +190,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 
                 // TODO: Put the stuff to get the background ready here...
-                let rainBackground = WeatherBackground(fileName: "rain", fileExtension: "mov", hasVideo: true)
-                let sunBackground = WeatherBackground(fileName: "tree-sun-loop", fileExtension: "mov", hasVideo: true)
-                let cloudyNightBackground = WeatherBackground(fileName: "cloudy-night", fileExtension: "mp4", hasVideo: true)
-                let partyCloudyBackground = WeatherBackground(fileName: "partly-cloudy", fileExtension: "jpg", hasVideo: false)
+                let rain_Background = WeatherBackground(fileName: "rain", fileExtension: "mov", hasVideo: true)
+                let sun_Background = WeatherBackground(fileName: "tree-sun-loop", fileExtension: "mov", hasVideo: true)
+                let cloudy_night_Background = WeatherBackground(fileName: "cloudy-night", fileExtension: "mp4", hasVideo: true)
+                let clear_day_Background = WeatherBackground(fileName: "partly-cloudy", fileExtension: "jpg", hasVideo: false)
+                let clear_night_Background = WeatherBackground(fileName: "clear-night", fileExtension: "jpg", hasVideo: false)
                 
                 var background: MPMoviePlayerController?
                 
-                switch weather.currentWeather.icon {
-                case "clear-day", "clear-night":
-                    background = sunBackground.prepareBackground(self, animated: firstUpdate)
-                case "overcast-day", "overcast-night":
-                    background = cloudyNightBackground.prepareBackground(self, animated: firstUpdate)
+                switch "partly-cloudy-night" { //weather.currentWeather.icon
+                case "clear-day":
+                    background = clear_day_Background.prepareBackground(self)
+                case "clear-night":
+                    background = clear_night_Background.prepareBackground(self)
+                case "rain":
+                    background = rain_Background.prepareBackground(self)
+                case "wind":
+                    background = sun_Background.prepareBackground(self)
+                case "partly-cloudy-night":
+                    background = cloudy_night_Background.prepareBackground(self)
                 default:
-                    background = rainBackground.prepareBackground(self, animated: firstUpdate)
+                    background = rain_Background.prepareBackground(self)
+                    println("No valid backgrounds found, using the rain one since it looks good.")
                 }
                 
                 if self.currentBackground != nil

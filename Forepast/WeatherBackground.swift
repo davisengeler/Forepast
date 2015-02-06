@@ -23,7 +23,7 @@ class WeatherBackground {
         self.hasVideo = hasVideo
     }
     
-    func prepareBackground(mainViewController : UIViewController, animated : Bool) -> MPMoviePlayerController {
+    func prepareBackground(mainViewController : UIViewController) -> MPMoviePlayerController {
         // We don't want the videos to interrupt music playing on the devices
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, error: nil)
         
@@ -63,6 +63,8 @@ class WeatherBackground {
         backgroundMoviePlayer.controlStyle = MPMovieControlStyle.None
         backgroundMoviePlayer.scalingMode = MPMovieScalingMode.AspectFill
         backgroundMoviePlayer.allowsAirPlay = false
+        
+        backgroundMoviePlayer.view.alpha = 0
         
         return backgroundMoviePlayer
     }
