@@ -24,6 +24,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var geocoder : CLGeocoder!
     var lastWeatherInfoUpdate : Int!
     var firstUpdate = true
+    
+    func screenEdgePanGestureAction(sender: AnyObject) {
+        println("Started to swipe in")
+        if sender.state == UIGestureRecognizerState.Began {
+            
+        } else if sender.state == UIGestureRecognizerState.Changed {
+            UIView.animateWithDuration(0.04, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+                var currentFrame = self.currentBackground.view.frame
+                currentFrame.origin.x = sender.locationInView(self.view).x
+                self.currentBackground.view.frame = currentFrame
+            }, completion: nil)
+        } else if sender.state == UIGestureRecognizerState.Ended {
+            if (sender.locationInView(self.view).x >= (self.view.frame.width / 2))
+            {
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+                    self.currentBackground.view.frame.origin.x = (self.view.frame.width - 10)
+                    }, completion: nil)
+            } else {
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+                    self.currentBackground.view.frame.origin.x = 0
+                    }, completion: nil)
+            }
+        }
+    }
 
     @IBAction func sendViewToBack(sender: AnyObject) {
         // TODO: Put the stuff to get the background ready here...rotat
@@ -68,6 +92,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var screenEdgePanGestureRecognizer = UIPanGestureRecognizer(target: self, action: "screenEdgePanGestureAction:")
+        screenEdgePanGestureRecognizer.minimumNumberOfTouches = 1
+        self.view.addGestureRecognizer(screenEdgePanGestureRecognizer)
         
         self.tempLabel.alpha = 0
         self.currentSummaryLabel.alpha = 0
@@ -198,7 +226,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 var background: MPMoviePlayerController?
                 
-                switch "partly-cloudy-night" { //weather.currentWeather.icon
+                switch weather.currentWeather.icon { //weather.currentWeather.icon
                 case "clear-day":
                     background = clear_day_Background.prepareBackground(self)
                 case "clear-night":

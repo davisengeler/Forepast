@@ -201,6 +201,7 @@
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Getting your weather..." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jV4-9m-aH7">
                                 <rect key="frame" x="16" y="211" width="568" height="46"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="Uzc-Y0-g9O"/>
                                 </constraints>
@@ -210,6 +211,9 @@
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="16" y="95" width="768" height="46"/>
                                 </variation>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="taa-yV-fH5" appends="YES" id="wcP-KN-zqZ"/>
+                                </connections>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="––" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3KM-Lm-M43">
                                 <rect key="frame" x="16" y="70" width="568" height="126"/>

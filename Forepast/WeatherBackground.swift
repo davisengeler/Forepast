@@ -51,6 +51,7 @@ class WeatherBackground {
             
             backgroundMoviePlayer.view.addSubview(backgroundImage)
             backgroundImage.frame = backgroundMoviePlayer.view.frame
+            backgroundImage.userInteractionEnabled = false
             backgroundImage.contentMode = UIViewContentMode.ScaleAspectFill
             
             backgroundMoviePlayer.view.autoresizesSubviews = true
@@ -63,6 +64,7 @@ class WeatherBackground {
         backgroundMoviePlayer.controlStyle = MPMovieControlStyle.None
         backgroundMoviePlayer.scalingMode = MPMovieScalingMode.AspectFill
         backgroundMoviePlayer.allowsAirPlay = false
+        backgroundMoviePlayer.view.userInteractionEnabled = false
         
         backgroundMoviePlayer.view.alpha = 0
         
