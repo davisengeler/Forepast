@@ -22,6 +22,8 @@
 		72A82E441A855FD100DA2AB6 /* placeholder.mov in Resources */ = {isa = PBXBuildFile; fileRef = 72A82E431A855FD100DA2AB6 /* placeholder.mov */; };
 		72C0A0BF1A3CCBD2007AB3B9 /* cloudy-night.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 72C0A0BE1A3CCBD2007AB3B9 /* cloudy-night.mp4 */; };
 		72E180FF1A85673200C0F398 /* clear-night.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72E180FE1A85673200C0F398 /* clear-night.jpg */; };
+		72E181011A8C361400C0F398 /* clear-evening.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72E181001A8C361400C0F398 /* clear-evening.jpg */; };
+		72E181031A8C362000C0F398 /* overcast.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72E181021A8C362000C0F398 /* overcast.jpg */; };
 		72E3951C1A8547B50079C1D0 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E3951B1A8547B50079C1D0 /* launch.png */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		72A82E431A855FD100DA2AB6 /* placeholder.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = placeholder.mov; sourceTree = "<group>"; };
 		72C0A0BE1A3CCBD2007AB3B9 /* cloudy-night.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cloudy-night.mp4"; sourceTree = "<group>"; };
 		72E180FE1A85673200C0F398 /* clear-night.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "clear-night.jpg"; sourceTree = "<group>"; };
+		72E181001A8C361400C0F398 /* clear-evening.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "clear-evening.jpg"; sourceTree = "<group>"; };
+		72E181021A8C362000C0F398 /* overcast.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = overcast.jpg; sourceTree = "<group>"; };
 		72E3951B1A8547B50079C1D0 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +117,8 @@
 		72218F711A2D02FE003CA21E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				72E181021A8C362000C0F398 /* overcast.jpg */,
+				72E181001A8C361400C0F398 /* clear-evening.jpg */,
 				72E180FE1A85673200C0F398 /* clear-night.jpg */,
 				72A82E431A855FD100DA2AB6 /* placeholder.mov */,
 				72A82E411A855A4800DA2AB6 /* partly-cloudy.jpg */,
@@ -230,11 +236,13 @@
 			files = (
 				72E3951C1A8547B50079C1D0 /* launch.png in Resources */,
 				72218F7C1A2D02FE003CA21E /* Main.storyboard in Resources */,
+				72E181031A8C362000C0F398 /* overcast.jpg in Resources */,
 				722AABDF1A2FDE6D0098D603 /* rain.mov in Resources */,
 				72C0A0BF1A3CCBD2007AB3B9 /* cloudy-night.mp4 in Resources */,
 				72A82E441A855FD100DA2AB6 /* placeholder.mov in Resources */,
 				72218F811A2D02FE003CA21E /* LaunchScreen.xib in Resources */,
 				72A82E421A855A4800DA2AB6 /* partly-cloudy.jpg in Resources */,
+				72E181011A8C361400C0F398 /* clear-evening.jpg in Resources */,
 				72E180FF1A85673200C0F398 /* clear-night.jpg in Resources */,
 				72218F7E1A2D02FE003CA21E /* Images.xcassets in Resources */,
 				722AABDD1A2E68D30098D603 /* tree-sun-loop.mov in Resources */,

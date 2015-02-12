@@ -25,6 +25,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var lastWeatherInfoUpdate : Int!
     var firstUpdate = true
     
+    enum TimeOfDay {
+        case Morning; case MidDay; case Afternoon; case Evening; case Night; case Other;
+    }
+    
+    func timeOfDay() -> TimeOfDay {
+        var timeOfDay: TimeOfDay
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute, fromDate: date)
+        var hour = components.hour
+        
+        if (7 <= hour && hour < 9) {
+            return TimeOfDay.Morning
+        } else if (9 <= hour && hour < 12) {
+            return TimeOfDay.MidDay
+        } else if (12 <= hour && hour < 18) {
+            return TimeOfDay.Afternoon
+        } else if (18 <= hour && hour < 20) {
+            return TimeOfDay.Evening
+        } else if (20 <= hour || hour < 7) {
+            return TimeOfDay.Night
+        }
+        else {
+            return TimeOfDay.Other
+        }
+    }
+    
     func screenEdgePanGestureAction(sender: AnyObject) {
         println("Started to swipe in")
         if sender.state == UIGestureRecognizerState.Began {
@@ -223,20 +250,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let cloudy_night_Background = WeatherBackground(fileName: "cloudy-night", fileExtension: "mp4", hasVideo: true)
                 let clear_day_Background = WeatherBackground(fileName: "partly-cloudy", fileExtension: "jpg", hasVideo: false)
                 let clear_night_Background = WeatherBackground(fileName: "clear-night", fileExtension: "jpg", hasVideo: false)
+                let overcast_day_Background = WeatherBackground(fileName: "overcast", fileExtension: "jpg", hasVideo: false)
+                let clear_evening_Background = WeatherBackground(fileName: "clear-evening", fileExtension: "jpg", hasVideo: false)
                 
                 var background: MPMoviePlayerController?
                 
-                switch weather.currentWeather.icon { //weather.currentWeather.icon
+                switch weather.currentWeather.icon {
                 case "clear-day":
-                    background = clear_day_Background.prepareBackground(self)
+                    if (timeOfDay() == TimeOfDay.Evening) {
+                        background = clear_evening_Background.prepareBackground(self)
+                    } else {
+                        background = clear_day_Background.prepareBackground(self)
+                    }
                 case "clear-night":
-                    background = clear_night_Background.prepareBackground(self)
+                    if (timeOfDay() == TimeOfDay.Evening) {
+                        background = clear_evening_Background.prepareBackground(self)
+                    } else {
+                        background = clear_night_Background.prepareBackground(self)
+                    }
                 case "rain":
                     background = rain_Background.prepareBackground(self)
                 case "wind":
-                    background = sun_Background.prepareBackground(self)
+                    if (timeOfDay() == TimeOfDay.Night) {
+                        background = cloudy_night_Background.prepareBackground(self)
+                    } else {
+                        background = sun_Background.prepareBackground(self)
+                    }
                 case "partly-cloudy-night":
                     background = cloudy_night_Background.prepareBackground(self)
+                case "partly-cloudy-day":
+                    background = overcast_day_Background.prepareBackground(self)
                 default:
                     background = rain_Background.prepareBackground(self)
                     println("No valid backgrounds found, using the rain one since it looks good.")
